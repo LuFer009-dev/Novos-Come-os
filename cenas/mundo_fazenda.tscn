@@ -1,0 +1,127 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://cenas/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://cenas/hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://cenas/item_coletavel.tscn" id="3_item"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tronco"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rocha"]
+size = Vector2(32, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arbusto"]
+size = Vector2(28, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lago"]
+size = Vector2(100, 70)
+
+[node name="MundoFazenda" type="Node2D"]
+y_sort_enabled = true
+
+[node name="ChaoGrama" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -1000.0
+offset_top = -800.0
+offset_right = 1000.0
+offset_bottom = 800.0
+color = Color(0.25, 0.52, 0.28, 1)
+
+[node name="CanteiroTerraArada" type="ColorRect" parent="."]
+z_index = -9
+offset_left = 60.0
+offset_top = -60.0
+offset_right = 180.0
+offset_bottom = 60.0
+color = Color(0.38, 0.24, 0.14, 1)
+
+[node name="Obstaculos" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="TroncoCarvalho" type="StaticBody2D" parent="Obstaculos"]
+position = Vector2(-120, -50)
+
+[node name="Visual" type="ColorRect" parent="Obstaculos/TroncoCarvalho"]
+offset_left = -20.0
+offset_top = -18.0
+offset_right = 20.0
+offset_bottom = 10.0
+color = Color(0.48, 0.3, 0.16, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/TroncoCarvalho"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_tronco")
+
+[node name="RochaMinerio" type="StaticBody2D" parent="Obstaculos"]
+position = Vector2(140, 120)
+
+[node name="Visual" type="ColorRect" parent="Obstaculos/RochaMinerio"]
+offset_left = -16.0
+offset_top = -20.0
+offset_right = 16.0
+offset_bottom = 12.0
+color = Color(0.55, 0.58, 0.62, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/RochaMinerio"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_rocha")
+
+[node name="ArbustoBagas" type="StaticBody2D" parent="Obstaculos"]
+position = Vector2(-80, 100)
+
+[node name="Visual" type="ColorRect" parent="Obstaculos/ArbustoBagas"]
+offset_left = -14.0
+offset_top = -18.0
+offset_right = 14.0
+offset_bottom = 10.0
+color = Color(0.18, 0.65, 0.32, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/ArbustoBagas"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_arbusto")
+
+[node name="LagoAgua" type="StaticBody2D" parent="Obstaculos"]
+position = Vector2(-220, 40)
+
+[node name="Visual" type="ColorRect" parent="Obstaculos/LagoAgua"]
+offset_left = -50.0
+offset_top = -35.0
+offset_right = 50.0
+offset_bottom = 35.0
+color = Color(0.18, 0.45, 0.75, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/LagoAgua"]
+shape = SubResource("RectangleShape2D_lago")
+
+[node name="ItensNoChao" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Graveto1" parent="ItensNoChao" instance=ExtResource("3_item")]
+position = Vector2(-50, -30)
+item_id = "graveto"
+quantidade = 1
+
+[node name="Graveto2" parent="ItensNoChao" instance=ExtResource("3_item")]
+position = Vector2(-150, 20)
+item_id = "graveto"
+quantidade = 2
+
+[node name="Ferro1" parent="ItensNoChao" instance=ExtResource("3_item")]
+position = Vector2(100, 150)
+item_id = "ferro"
+quantidade = 1
+
+[node name="Tomate1" parent="ItensNoChao" instance=ExtResource("3_item")]
+position = Vector2(90, -20)
+item_id = "tomate"
+quantidade = 3
+
+[node name="Cenoura1" parent="ItensNoChao" instance=ExtResource("3_item")]
+position = Vector2(140, 20)
+item_id = "cenoura"
+quantidade = 2
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(0, 0)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]

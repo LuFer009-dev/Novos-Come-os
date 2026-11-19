@@ -1,0 +1,7 @@
+Pasta principal de Assets do projeto Novos Começos.
+
+Estrutura recomendada para organizar seus arquivos:
+- /sprites/personagens/ -> Sprites do Luan, animais e inimigos.
+- /sprites/cenario/     -> Árvores, pedras, construções, terra arada e tilesets.
+- /sprites/itens/       -> Ícones de ferramentas (enxada, picareta), sementes, minérios e comidas.
+- /sprites/ui/          -> Elementos visuais da interface (bordas de slots, ícones de coração/fome).

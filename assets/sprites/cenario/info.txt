@@ -1,0 +1,1 @@
+Coloque aqui os sprites do ambiente: árvores, rochas de minério, água, canteiros de plantio, cercas e tilesets de terreno.

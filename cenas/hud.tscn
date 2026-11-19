@@ -1,0 +1,519 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/slot_ui.gd" id="2_slot_ui"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/MolduraSlot.png" id="3_slot_frame"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/seletor_ativo.png" id="4_seletor"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/mochila-0001.png" id="5_mochila"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="PainelStatus" type="MarginContainer" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 260.0
+offset_bottom = 60.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PainelStatus"]
+layout_mode = 2
+
+[node name="LinhaVida" type="HBoxContainer" parent="PainelStatus/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextoVida" type="Label" parent="PainelStatus/VBoxContainer/LinhaVida"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "HP: 100/100"
+
+[node name="BarraVida" type="ProgressBar" parent="PainelStatus/VBoxContainer/LinhaVida"]
+custom_minimum_size = Vector2(150, 16)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+show_percentage = false
+
+[node name="BarraFerramentas" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -90.0
+offset_right = 210.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="LabelItemAtivo" type="Label" parent="BarraFerramentas"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = -24.0
+offset_right = 160.0
+offset_bottom = -2.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "[Tecla 1] Enxada de Madeira"
+horizontal_alignment = 1
+
+[node name="FundoBarra" type="ColorRect" parent="BarraFerramentas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.88)
+
+[node name="SlotsContainer" type="HBoxContainer" parent="BarraFerramentas"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 12.0
+offset_top = -24.0
+offset_right = 348.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Slot1" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot1"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "1"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="Slot2" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot2"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "2"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="Slot3" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot3"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "3"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="Slot4" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot4"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "4"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot4"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="Slot5" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot5"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot5"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "5"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot5"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="Slot6" type="TextureRect" parent="BarraFerramentas/SlotsContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="ItemIcon" type="TextureRect" parent="BarraFerramentas/SlotsContainer/Slot6"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Numero" type="Label" parent="BarraFerramentas/SlotsContainer/Slot6"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 11
+text = "6"
+
+[node name="QtdLabel" type="Label" parent="BarraFerramentas/SlotsContainer/Slot6"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+
+[node name="BotaoMochila" type="TextureButton" parent="BarraFerramentas"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -58.0
+offset_top = -24.0
+offset_right = -10.0
+offset_bottom = 24.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("5_mochila")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="LabelE" type="Label" parent="BarraFerramentas/BotaoMochila"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 11
+text = "[E]"
+
+[node name="SeletorAtivo" type="TextureRect" parent="BarraFerramentas"]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 63.0
+offset_bottom = 63.0
+mouse_filter = 2
+texture = ExtResource("4_seletor")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="JanelaInventario" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="JanelaInventario"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="PainelCentral" type="Panel" parent="JanelaInventario"]
+custom_minimum_size = Vector2(440, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -130.0
+offset_right = 220.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo" type="Label" parent="JanelaInventario/PainelCentral"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 12.0
+offset_right = 140.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 15
+text = "🎒 MOCHILA / INVENTÁRIO (27 ESPAÇOS)"
+
+[node name="BotaoFechar" type="Button" parent="JanelaInventario/PainelCentral"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 38.0
+grow_horizontal = 0
+text = "✕"
+
+[node name="Dica" type="Label" parent="JanelaInventario/PainelCentral"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -30.0
+offset_right = 200.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "Arraste e solte os itens para organizar • Slots 1 a 6 são da barra rápida"
+horizontal_alignment = 1
+
+[node name="GridSlots" type="GridContainer" parent="JanelaInventario/PainelCentral"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -75.0
+offset_right = 190.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 9

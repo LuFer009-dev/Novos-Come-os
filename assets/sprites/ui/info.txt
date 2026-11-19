@@ -1,0 +1,1 @@
+Coloque aqui os elementos visuais da interface: molduras de slots da barra rápida (6 slots), ícones de vida (coração), ícones de fome, caixas de diálogo e botões.

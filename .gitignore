@@ -1,0 +1,13 @@
+# Godot 4 ignores
+.godot/
+*.translation
+
+# Mono / C#
+.mono/
+*.csproj
+*.sln
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
