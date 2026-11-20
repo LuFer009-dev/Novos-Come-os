@@ -4,8 +4,9 @@ class_name HUD
 ## Gerencia a interface do jogo:
 ## - Barra de Vida (RF013)
 ## - Barra de Ferramentas Rápida (6 slots - RF015) com indicador visual do slot ativo (teclas 1 a 6)
-## - Janela da Mochila / Inventário com 27 slots (RF012), aberta por 'E' ou pelo botão da mochila
-## - Sistema completo de Drag and Drop (Arrastar e Soltar) entre todos os slots
+## - Janela da Mochila / Inventário com 27 slots (RF012)
+## - 4 Slots de Equipamento de Armadura (Capacete, Peitoral, Calças, Botas)
+## - Sistema completo de Drag and Drop (Arrastar e Soltar)
 
 @onready var barra_vida: ProgressBar = $PainelStatus/VBoxContainer/LinhaVida/BarraVida
 @onready var texto_vida: Label = $PainelStatus/VBoxContainer/LinhaVida/TextoVida
@@ -17,17 +18,26 @@ class_name HUD
 @onready var label_item_ativo: Label = $BarraFerramentas/LabelItemAtivo
 @onready var btn_mochila: TextureButton = $BarraFerramentas/BotaoMochila
 
-# Janela da Mochila (27 slots)
+# Janela da Mochila
 @onready var janela_inventario: Control = $JanelaInventario
 @onready var grid_inventario: GridContainer = $JanelaInventario/PainelCentral/GridSlots
 @onready var btn_fechar_inventario: Button = $JanelaInventario/PainelCentral/BotaoFechar
+@onready var label_defesa: Label = $JanelaInventario/PainelCentral/PainelArmaduras/LabelDefesa
+
+# Slots de Armadura
+@onready var slot_capacete_node: TextureRect = $JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCapacete
+@onready var slot_peitoral_node: TextureRect = $JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotPeitoral
+@onready var slot_calca_node: TextureRect = $JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCalca
+@onready var slot_botas_node: TextureRect = $JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotBotas
 
 var slots_hotbar_nodes: Array = []
 var slots_inventario_nodes: Array = []
+var slots_armadura_nodes: Array = []
 
 func _ready() -> void:
 	conectar_jogador()
 	conectar_inventario()
+	inicializar_slots_armadura()
 	inicializar_grid_inventario()
 	atualizar_todos_os_slots()
 	atualizar_seletor(InventoryManager.slot_ativo)
@@ -45,17 +55,36 @@ func conectar_jogador() -> void:
 func conectar_inventario() -> void:
 	InventoryManager.inventario_atualizado.connect(_on_inventario_atualizado)
 	InventoryManager.slot_ativo_alterado.connect(_on_slot_ativo_alterado)
+	InventoryManager.defesa_alterada.connect(_on_defesa_alterada)
 	
-	# Mapeia e configura os 6 slots da hotbar como SlotUI
 	slots_hotbar_nodes.clear()
 	for i in range(InventoryManager.SLOTS_HOTBAR):
 		var slot_node = container_hotbar.get_node_or_null("Slot" + str(i + 1))
 		if slot_node:
-			# Adiciona o script de SlotUI se não estiver configurado
 			if not (slot_node is SlotUI):
 				slot_node.set_script(preload("res://scripts/slot_ui.gd"))
 			slot_node.configurar(i, true)
 			slots_hotbar_nodes.append(slot_node)
+
+func inicializar_slots_armadura() -> void:
+	var sil_cap = preload("res://assets/sprites/ui/inventario/Equipamentos/SlotCapacete-0001.png")
+	var sil_pei = preload("res://assets/sprites/ui/inventario/Equipamentos/SlotPeitoral-0001.png")
+	var sil_cal = preload("res://assets/sprites/ui/inventario/Equipamentos/SlotCalcas-0001.png")
+	var sil_bot = preload("res://assets/sprites/ui/inventario/Equipamentos/SlotBotas-0001.png")
+	
+	slots_armadura_nodes = [
+		slot_capacete_node,
+		slot_peitoral_node,
+		slot_calca_node,
+		slot_botas_node
+	]
+	
+	slot_capacete_node.configurar(InventoryManager.SLOT_CAPACETE, false, "capacete", sil_cap)
+	slot_peitoral_node.configurar(InventoryManager.SLOT_PEITORAL, false, "peitoral", sil_pei)
+	slot_calca_node.configurar(InventoryManager.SLOT_CALCA, false, "calca", sil_cal)
+	slot_botas_node.configurar(InventoryManager.SLOT_BOTAS, false, "botas", sil_bot)
+	
+	_on_defesa_alterada(InventoryManager.obter_defesa_total())
 
 func inicializar_grid_inventario() -> void:
 	for child in grid_inventario.get_children():
@@ -66,8 +95,8 @@ func inicializar_grid_inventario() -> void:
 	var tex_moldura = preload("res://assets/sprites/ui/inventario/MolduraSlot.png")
 	var slot_script = preload("res://scripts/slot_ui.gd")
 	
-	# Cria os 27 slots do inventário (9 colunas x 3 linhas)
-	for i in range(InventoryManager.TOTAL_SLOTS):
+	# Cria os 27 slots da mochila (9 colunas x 3 linhas)
+	for i in range(InventoryManager.SLOTS_INVENTARIO):
 		var slot_box = TextureRect.new()
 		slot_box.set_script(slot_script)
 		slot_box.custom_minimum_size = Vector2(40, 40)
@@ -132,21 +161,18 @@ func inicializar_grid_inventario() -> void:
 		slots_inventario_nodes.append(slot_box)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Abrir / fechar mochila com a tecla 'E'
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode == KEY_E:
 			toggle_inventario()
 			get_viewport().set_input_as_handled()
 			return
 		
-		# Teclas 1 a 6 para trocar de ferramenta rápida
 		if event.physical_keycode >= KEY_1 and event.physical_keycode <= KEY_6:
 			var slot_idx = event.physical_keycode - KEY_1
 			InventoryManager.trocar_slot_ativo(slot_idx)
 			get_viewport().set_input_as_handled()
 			return
 	
-	# Scroll do mouse para navegar entre os slots
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			var novo = (InventoryManager.slot_ativo - 1 + InventoryManager.SLOTS_HOTBAR) % InventoryManager.SLOTS_HOTBAR
@@ -167,6 +193,10 @@ func _on_vida_alterada(atual: float, maximo: float) -> void:
 	if texto_vida:
 		texto_vida.text = "HP: %d/%d" % [int(atual), int(maximo)]
 
+func _on_defesa_alterada(total_defesa: int) -> void:
+	if label_defesa:
+		label_defesa.text = "🛡️ Defesa: %d" % total_defesa
+
 func _on_inventario_atualizado() -> void:
 	atualizar_todos_os_slots()
 	atualizar_seletor(InventoryManager.slot_ativo)
@@ -180,6 +210,10 @@ func atualizar_todos_os_slots() -> void:
 			slot.atualizar()
 	
 	for slot in slots_inventario_nodes:
+		if slot and slot.has_method("atualizar"):
+			slot.atualizar()
+	
+	for slot in slots_armadura_nodes:
 		if slot and slot.has_method("atualizar"):
 			slot.atualizar()
 

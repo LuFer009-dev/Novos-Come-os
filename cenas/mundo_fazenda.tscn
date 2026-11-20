@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://cenas/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://cenas/hud.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://cenas/item_coletavel.tscn" id="3_item"]
+[ext_resource type="PackedScene" path="res://cenas/arvore.tscn" id="4_arvore"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tronco"]
 size = Vector2(40, 20)
@@ -34,6 +35,36 @@ offset_top = -60.0
 offset_right = 180.0
 offset_bottom = 60.0
 color = Color(0.38, 0.24, 0.14, 1)
+
+[node name="Arvores" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="ArvoreAdulta1" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(-90, -110)
+estagio_atual = 3
+
+[node name="ArvoreAdulta2" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(-170, -90)
+estagio_atual = 3
+
+[node name="ArvoreMedia" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(120, -120)
+estagio_atual = 2
+tempo_por_estagio = 15.0
+
+[node name="ArvorePequena" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(-180, 110)
+estagio_atual = 1
+tempo_por_estagio = 15.0
+
+[node name="BrotoMuda" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(210, 60)
+estagio_atual = 0
+tempo_por_estagio = 15.0
+
+[node name="ArvoreAdulta3" parent="Arvores" instance=ExtResource("4_arvore")]
+position = Vector2(30, 150)
+estagio_atual = 3
 
 [node name="Obstaculos" type="Node2D" parent="."]
 y_sort_enabled = true

@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/slot_ui.gd" id="2_slot_ui"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/MolduraSlot.png" id="3_slot_frame"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/seletor_ativo.png" id="4_seletor"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/mochila-0001.png" id="5_mochila"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/Equipamentos/SlotCapacete-0001.png" id="6_sil_cap"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/Equipamentos/SlotPeitoral-0001.png" id="7_sil_pei"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/Equipamentos/SlotCalcas-0001.png" id="8_sil_cal"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/inventario/Equipamentos/SlotBotas-0001.png" id="9_sil_bot"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -443,17 +447,17 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.45)
 
 [node name="PainelCentral" type="Panel" parent="JanelaInventario"]
-custom_minimum_size = Vector2(440, 260)
+custom_minimum_size = Vector2(550, 270)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -130.0
-offset_right = 220.0
-offset_bottom = 130.0
+offset_left = -275.0
+offset_top = -135.0
+offset_right = 275.0
+offset_bottom = 135.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -462,13 +466,13 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -180.0
-offset_top = 12.0
-offset_right = 140.0
-offset_bottom = 36.0
+offset_left = -220.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 34.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 15
-text = "🎒 MOCHILA / INVENTÁRIO (27 ESPAÇOS)"
+text = "🎒 MOCHILA (27 SLOTS) & EQUIPAMENTOS"
 
 [node name="BotaoFechar" type="Button" parent="JanelaInventario/PainelCentral"]
 custom_minimum_size = Vector2(30, 30)
@@ -490,29 +494,248 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -30.0
-offset_right = 200.0
-offset_bottom = -10.0
+offset_left = -250.0
+offset_top = -28.0
+offset_right = 250.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 11
-text = "Arraste e solte os itens para organizar • Slots 1 a 6 são da barra rápida"
+text = "Arraste armaduras para os slots da esquerda • Slots 1 a 6 são da barra rápida"
 horizontal_alignment = 1
 
-[node name="GridSlots" type="GridContainer" parent="JanelaInventario/PainelCentral"]
+[node name="PainelArmaduras" type="VBoxContainer" parent="JanelaInventario/PainelCentral"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -95.0
+offset_right = 110.0
+offset_bottom = 95.0
+grow_vertical = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="TituloArmadura" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "ARMADURA"
+horizontal_alignment = 1
+
+[node name="ContainerArmaduras" type="VBoxContainer" parent="JanelaInventario/PainelCentral/PainelArmaduras"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="SlotCapacete" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="Silhueta" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCapacete"]
+modulate = Color(1, 1, 1, 0.45)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -190.0
-offset_top = -75.0
-offset_right = 190.0
-offset_bottom = 75.0
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
 grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_sil_cap")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemIcon" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCapacete"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QtdLabel" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCapacete"]
+layout_mode = 0
+
+[node name="SlotPeitoral" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="Silhueta" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotPeitoral"]
+modulate = Color(1, 1, 1, 0.45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_sil_pei")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemIcon" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotPeitoral"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QtdLabel" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotPeitoral"]
+layout_mode = 0
+
+[node name="SlotCalca" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="Silhueta" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCalca"]
+modulate = Color(1, 1, 1, 0.45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_sil_cal")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemIcon" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCalca"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QtdLabel" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCalca"]
+layout_mode = 0
+
+[node name="SlotBotas" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_slot_frame")
+stretch_mode = 5
+script = ExtResource("2_slot_ui")
+
+[node name="Silhueta" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotBotas"]
+modulate = Color(1, 1, 1, 0.45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_sil_bot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemIcon" type="TextureRect" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotBotas"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QtdLabel" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotBotas"]
+layout_mode = 0
+
+[node name="LabelDefesa" type="Label" parent="JanelaInventario/PainelCentral/PainelArmaduras"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "🛡️ Defesa: 0"
+horizontal_alignment = 1
+
+[node name="GridSlots" type="GridContainer" parent="JanelaInventario/PainelCentral"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -410.0
+offset_top = -68.0
+offset_right = -15.0
+offset_bottom = 68.0
+grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6

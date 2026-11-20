@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/arvore.gd" id="1_arvore"]
+[ext_resource type="Texture2D" path="res://assets/sprites/cenario/arvore_carvalho.png" id="2_arvore_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tronco"]
+size = Vector2(14, 8)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_clique"]
+radius = 22.0
+height = 54.0
+
+[node name="Arvore" type="StaticBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_arvore")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -28)
+texture = ExtResource("2_arvore_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_tronco")
+
+[node name="AreaClique" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaClique"]
+position = Vector2(0, -26)
+shape = SubResource("CapsuleShape2D_clique")
