@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name HUD
 
+static var inventario_aberto: bool = false
+
 ## Gerencia a interface do jogo:
 ## - Barra de Vida (RF013)
 ## - Barra de Ferramentas Rápida (6 slots - RF015) com indicador visual do slot ativo (teclas 1 a 6)
@@ -183,6 +185,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func toggle_inventario() -> void:
 	janela_inventario.visible = !janela_inventario.visible
+	inventario_aberto = janela_inventario.visible
 	if janela_inventario.visible:
 		atualizar_todos_os_slots()
 
