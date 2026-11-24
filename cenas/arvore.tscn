@@ -10,7 +10,7 @@ size = Vector2(14, 8)
 radius = 22.0
 height = 54.0
 
-[node name="Arvore" type="StaticBody2D"]
+[node name="Arvore" type="StaticBody2D" groups=["arvores"]]
 y_sort_enabled = true
 script = ExtResource("1_arvore")
 

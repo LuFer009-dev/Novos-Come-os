@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/rocha_minerio.gd" id="1_rocha"]
+[ext_resource type="Texture2D" path="res://assets/sprites/cenario/rocha_ferro.png" id="2_rocha_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_base"]
+size = Vector2(22, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_clique"]
+radius = 18.0
+
+[node name="RochaMinerio" type="StaticBody2D" groups=["rochas"]]
+y_sort_enabled = true
+script = ExtResource("1_rocha")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+texture = ExtResource("2_rocha_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_base")
+
+[node name="AreaClique" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaClique"]
+position = Vector2(0, -2)
+shape = SubResource("CircleShape2D_clique")

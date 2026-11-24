@@ -1,15 +1,13 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://c2an0vmj80it2"]
 
 [ext_resource type="PackedScene" path="res://cenas/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://cenas/hud.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://cenas/item_coletavel.tscn" id="3_item"]
 [ext_resource type="PackedScene" path="res://cenas/arvore.tscn" id="4_arvore"]
+[ext_resource type="PackedScene" path="res://cenas/rocha_minerio.tscn" id="5_rocha"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tronco"]
 size = Vector2(40, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rocha"]
-size = Vector2(32, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_arbusto"]
 size = Vector2(28, 20)
@@ -17,10 +15,10 @@ size = Vector2(28, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lago"]
 size = Vector2(100, 70)
 
-[node name="MundoFazenda" type="Node2D"]
+[node name="MundoFazenda" type="Node2D" unique_id=1239862163]
 y_sort_enabled = true
 
-[node name="ChaoGrama" type="ColorRect" parent="."]
+[node name="ChaoGrama" type="ColorRect" parent="." unique_id=744261229]
 z_index = -10
 offset_left = -1000.0
 offset_top = -800.0
@@ -28,131 +26,116 @@ offset_right = 1000.0
 offset_bottom = 800.0
 color = Color(0.25, 0.52, 0.28, 1)
 
-[node name="CanteiroTerraArada" type="ColorRect" parent="."]
-z_index = -9
-offset_left = 60.0
-offset_top = -60.0
-offset_right = 180.0
-offset_bottom = 60.0
-color = Color(0.38, 0.24, 0.14, 1)
-
-[node name="Arvores" type="Node2D" parent="."]
+[node name="Arvores" type="Node2D" parent="." unique_id=940871343]
 y_sort_enabled = true
 
-[node name="ArvoreAdulta1" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="ArvoreAdulta1" parent="Arvores" unique_id=340108502 instance=ExtResource("4_arvore")]
 position = Vector2(-90, -110)
-estagio_atual = 3
 
-[node name="ArvoreAdulta2" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="ArvoreAdulta2" parent="Arvores" unique_id=1722211747 instance=ExtResource("4_arvore")]
 position = Vector2(-170, -90)
-estagio_atual = 3
 
-[node name="ArvoreMedia" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="ArvoreMedia" parent="Arvores" unique_id=1712804711 instance=ExtResource("4_arvore")]
 position = Vector2(120, -120)
 estagio_atual = 2
 tempo_por_estagio = 15.0
 
-[node name="ArvorePequena" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="ArvorePequena" parent="Arvores" unique_id=141312810 instance=ExtResource("4_arvore")]
 position = Vector2(-180, 110)
 estagio_atual = 1
 tempo_por_estagio = 15.0
 
-[node name="BrotoMuda" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="BrotoMuda" parent="Arvores" unique_id=704521146 instance=ExtResource("4_arvore")]
 position = Vector2(210, 60)
 estagio_atual = 0
 tempo_por_estagio = 15.0
 
-[node name="ArvoreAdulta3" parent="Arvores" instance=ExtResource("4_arvore")]
+[node name="ArvoreAdulta3" parent="Arvores" unique_id=871753266 instance=ExtResource("4_arvore")]
 position = Vector2(30, 150)
-estagio_atual = 3
 
-[node name="Obstaculos" type="Node2D" parent="."]
+[node name="Rochas" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="TroncoCarvalho" type="StaticBody2D" parent="Obstaculos"]
+[node name="RochaMinerio1" parent="Rochas" instance=ExtResource("5_rocha")]
+position = Vector2(140, 120)
+
+[node name="RochaMinerio2" parent="Rochas" instance=ExtResource("5_rocha")]
+position = Vector2(180, 150)
+
+[node name="RochaMinerio3" parent="Rochas" instance=ExtResource("5_rocha")]
+position = Vector2(-130, 170)
+
+[node name="Obstaculos" type="Node2D" parent="." unique_id=8768575]
+y_sort_enabled = true
+
+[node name="TroncoCarvalho" type="StaticBody2D" parent="Obstaculos" unique_id=440809825]
 position = Vector2(-120, -50)
 
-[node name="Visual" type="ColorRect" parent="Obstaculos/TroncoCarvalho"]
+[node name="Visual" type="ColorRect" parent="Obstaculos/TroncoCarvalho" unique_id=324759694]
 offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 10.0
 color = Color(0.48, 0.3, 0.16, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/TroncoCarvalho"]
-position = Vector2(0, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/TroncoCarvalho" unique_id=945820586]
 shape = SubResource("RectangleShape2D_tronco")
 
-[node name="RochaMinerio" type="StaticBody2D" parent="Obstaculos"]
-position = Vector2(140, 120)
-
-[node name="Visual" type="ColorRect" parent="Obstaculos/RochaMinerio"]
-offset_left = -16.0
-offset_top = -20.0
-offset_right = 16.0
-offset_bottom = 12.0
-color = Color(0.55, 0.58, 0.62, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/RochaMinerio"]
-position = Vector2(0, 0)
-shape = SubResource("RectangleShape2D_rocha")
-
-[node name="ArbustoBagas" type="StaticBody2D" parent="Obstaculos"]
+[node name="ArbustoBagas" type="StaticBody2D" parent="Obstaculos" unique_id=687756409]
 position = Vector2(-80, 100)
 
-[node name="Visual" type="ColorRect" parent="Obstaculos/ArbustoBagas"]
+[node name="Visual" type="ColorRect" parent="Obstaculos/ArbustoBagas" unique_id=856808597]
 offset_left = -14.0
 offset_top = -18.0
 offset_right = 14.0
 offset_bottom = 10.0
 color = Color(0.18, 0.65, 0.32, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/ArbustoBagas"]
-position = Vector2(0, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/ArbustoBagas" unique_id=972192214]
 shape = SubResource("RectangleShape2D_arbusto")
 
-[node name="LagoAgua" type="StaticBody2D" parent="Obstaculos"]
+[node name="LagoAgua" type="StaticBody2D" parent="Obstaculos" unique_id=1416790938]
 position = Vector2(-220, 40)
 
-[node name="Visual" type="ColorRect" parent="Obstaculos/LagoAgua"]
+[node name="Visual" type="ColorRect" parent="Obstaculos/LagoAgua" unique_id=1130638520]
 offset_left = -50.0
 offset_top = -35.0
 offset_right = 50.0
 offset_bottom = 35.0
 color = Color(0.18, 0.45, 0.75, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/LagoAgua"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/LagoAgua" unique_id=1148119097]
 shape = SubResource("RectangleShape2D_lago")
 
-[node name="ItensNoChao" type="Node2D" parent="."]
+[node name="ItensNoChao" type="Node2D" parent="." unique_id=1432420288]
 y_sort_enabled = true
 
-[node name="Graveto1" parent="ItensNoChao" instance=ExtResource("3_item")]
+[node name="Graveto1" parent="ItensNoChao" unique_id=1063673620 instance=ExtResource("3_item")]
 position = Vector2(-50, -30)
 item_id = "graveto"
 quantidade = 1
 
-[node name="Graveto2" parent="ItensNoChao" instance=ExtResource("3_item")]
+[node name="Graveto2" parent="ItensNoChao" unique_id=1295328221 instance=ExtResource("3_item")]
 position = Vector2(-150, 20)
 item_id = "graveto"
 quantidade = 2
 
-[node name="Ferro1" parent="ItensNoChao" instance=ExtResource("3_item")]
+[node name="Ferro1" parent="ItensNoChao" unique_id=1658428889 instance=ExtResource("3_item")]
 position = Vector2(100, 150)
 item_id = "ferro"
 quantidade = 1
 
-[node name="Tomate1" parent="ItensNoChao" instance=ExtResource("3_item")]
+[node name="Tomate1" parent="ItensNoChao" unique_id=2081541348 instance=ExtResource("3_item")]
 position = Vector2(90, -20)
 item_id = "tomate"
 quantidade = 3
 
-[node name="Cenoura1" parent="ItensNoChao" instance=ExtResource("3_item")]
+[node name="Cenoura1" parent="ItensNoChao" unique_id=1263884848 instance=ExtResource("3_item")]
 position = Vector2(140, 20)
 item_id = "cenoura"
 quantidade = 2
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." unique_id=1934988950 instance=ExtResource("1_player")]
 position = Vector2(0, 0)
 
-[node name="HUD" parent="." instance=ExtResource("2_hud")]
+[node name="HUD" parent="." unique_id=1107409210 instance=ExtResource("2_hud")]

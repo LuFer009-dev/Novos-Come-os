@@ -88,3 +88,16 @@ shape = SubResource("RectangleShape2D_pes")
 process_callback = 0
 zoom = Vector2(3, 3)
 position_smoothing_enabled = false
+
+[node name="PivotFerramenta" type="Node2D" parent="."]
+position = Vector2(0, 4)
+
+[node name="SpriteFerramenta" type="Sprite2D" parent="PivotFerramenta"]
+visible = false
+position = Vector2(14, 0)
+scale = Vector2(0.9, 0.9)
+
+[node name="RayCastAcao" type="RayCast2D" parent="."]
+target_position = Vector2(0, 32)
+collide_with_areas = true
+collide_with_bodies = true
