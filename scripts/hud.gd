@@ -25,6 +25,36 @@ static var inventario_aberto: bool = false
 @onready var grid_inventario: GridContainer = $JanelaInventario/PainelCentral/GridSlots
 @onready var btn_fechar_inventario: Button = $JanelaInventario/PainelCentral/BotaoFechar
 @onready var label_defesa: Label = $JanelaInventario/PainelCentral/PainelArmaduras/LabelDefesa
+@onready var painel_armaduras: VBoxContainer = $JanelaInventario/PainelCentral/PainelArmaduras
+@onready var dica_inventario: Label = $JanelaInventario/PainelCentral/Dica
+
+# Abas do Menu do Inventário
+@onready var btn_aba_mochila: Button = $JanelaInventario/PainelCentral/BarraAbas/BotaoAbaMochila
+@onready var btn_aba_crafting: Button = $JanelaInventario/PainelCentral/BarraAbas/BotaoAbaCrafting
+
+# Elementos de Crafting (Criação de Itens)
+@onready var conteudo_crafting: Control = $JanelaInventario/PainelCentral/ConteudoCrafting
+@onready var lista_receitas_vbox: VBoxContainer = $JanelaInventario/PainelCentral/ConteudoCrafting/ScrollReceitas/ListaReceitas
+@onready var icone_resultado: TextureRect = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo/IconeResultado
+@onready var nome_resultado: Label = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo/VBoxTexto/NomeResultado
+@onready var descricao_resultado: Label = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo/VBoxTexto/DescricaoResultado
+@onready var lista_ingredientes_vbox: VBoxContainer = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/ScrollIngredientes/ListaIngredientes
+@onready var btn_criar_craft: Button = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes/BotaoCriar
+@onready var label_status_craft: Label = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes/LabelStatus
+
+# Janela de Notificação de Atualização
+@onready var janela_atualizacao: Control = $JanelaAtualizacao
+@onready var texto_versao_notif: Label = $JanelaAtualizacao/PainelDialogo/VBox/TextoVersao
+@onready var texto_msg_notif: Label = $JanelaAtualizacao/PainelDialogo/VBox/TextoMensagem
+@onready var btn_ir_ao_site: Button = $JanelaAtualizacao/PainelDialogo/VBox/HBoxBotoes/BotaoIrAoSite
+@onready var btn_fechar_notif: Button = $JanelaAtualizacao/PainelDialogo/VBox/HBoxBotoes/BotaoFecharNotif
+@onready var verificador_atualizacao: HTTPRequest = $VerificadorAtualizacao
+
+const VERSAO_ATUAL: String = "1.0.0"
+const URL_VERSAO_REMOTO: String = "https://raw.githubusercontent.com/LuFer009-dev/Novos-Come-os/main/versao.json"
+
+var receita_selecionada: Dictionary = {}
+var url_site_atualizacao: String = "https://github.com/LuFer009-dev/Novos-Come-os/releases/latest"
 
 # Slots de Armadura
 @onready var slot_capacete_node: TextureRect = $JanelaInventario/PainelCentral/PainelArmaduras/ContainerArmaduras/SlotCapacete
@@ -46,6 +76,18 @@ func _ready() -> void:
 	
 	btn_mochila.pressed.connect(toggle_inventario)
 	btn_fechar_inventario.pressed.connect(toggle_inventario)
+	
+	# Conexões das Abas de Mochila e Crafting
+	btn_aba_mochila.pressed.connect(mostrar_aba_mochila)
+	btn_aba_crafting.pressed.connect(mostrar_aba_crafting)
+	btn_criar_craft.pressed.connect(_on_botao_criar_craft_pressionado)
+	
+	# Conexões da Janela de Atualização Automática
+	btn_ir_ao_site.pressed.connect(_on_ir_ao_site_pressionado)
+	btn_fechar_notif.pressed.connect(_on_fechar_notificacao_pressionado)
+	
+	mostrar_aba_mochila()
+	iniciar_verificacao_atualizacao()
 
 func conectar_jogador() -> void:
 	var player = get_tree().get_first_node_in_group("player")
@@ -203,6 +245,8 @@ func _on_defesa_alterada(total_defesa: int) -> void:
 func _on_inventario_atualizado() -> void:
 	atualizar_todos_os_slots()
 	atualizar_seletor(InventoryManager.slot_ativo)
+	if conteudo_crafting and conteudo_crafting.visible:
+		atualizar_painel_crafting()
 
 func _on_slot_ativo_alterado(novo_indice: int) -> void:
 	atualizar_seletor(novo_indice)
@@ -231,3 +275,181 @@ func atualizar_seletor(indice: int) -> void:
 			label_item_ativo.text = "[Tecla %d] %s" % [indice + 1, item["nome"]]
 		elif label_item_ativo:
 			label_item_ativo.text = "[Tecla %d] Vazio" % [indice + 1]
+
+# ==============================================================================
+# CONTROLE DE ABAS (MOCHILA vs CRAFTING)
+# ==============================================================================
+
+func mostrar_aba_mochila() -> void:
+	if painel_armaduras:
+		painel_armaduras.visible = true
+	if grid_inventario:
+		grid_inventario.visible = true
+	if dica_inventario:
+		dica_inventario.visible = true
+	if conteudo_crafting:
+		conteudo_crafting.visible = false
+	
+	btn_aba_mochila.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	btn_aba_crafting.modulate = Color(0.7, 0.7, 0.7, 1.0)
+	atualizar_todos_os_slots()
+
+func mostrar_aba_crafting() -> void:
+	if painel_armaduras:
+		painel_armaduras.visible = false
+	if grid_inventario:
+		grid_inventario.visible = false
+	if dica_inventario:
+		dica_inventario.visible = false
+	if conteudo_crafting:
+		conteudo_crafting.visible = true
+	
+	btn_aba_mochila.modulate = Color(0.7, 0.7, 0.7, 1.0)
+	btn_aba_crafting.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	atualizar_painel_crafting()
+
+# ==============================================================================
+# SISTEMA DE INTERFACE DE CRAFTING
+# ==============================================================================
+
+func atualizar_painel_crafting() -> void:
+	if not lista_receitas_vbox:
+		return
+	
+	for child in lista_receitas_vbox.get_children():
+		child.queue_free()
+	
+	if receita_selecionada.is_empty() and InventoryManager.receitas_db.size() > 0:
+		receita_selecionada = InventoryManager.receitas_db[0]
+	
+	for rec in InventoryManager.receitas_db:
+		var pode = InventoryManager.pode_criar_receita(rec)
+		var btn = Button.new()
+		btn.custom_minimum_size = Vector2(0, 36)
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		
+		var info_res = InventoryManager.itens_db.get(rec["resultado"]["id"], {})
+		if info_res.has("icone"):
+			btn.icon = load(info_res["icone"])
+			btn.expand_icon = true
+		
+		var status_str = " ✅" if pode else " (Falta)"
+		btn.text = " %s%s" % [rec["nome"], status_str]
+		if pode:
+			btn.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
+		else:
+			btn.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+		
+		btn.pressed.connect(func():
+			selecionar_receita(rec)
+		)
+		lista_receitas_vbox.add_child(btn)
+	
+	exibir_detalhes_receita(receita_selecionada)
+
+func selecionar_receita(rec: Dictionary) -> void:
+	receita_selecionada = rec
+	if label_status_craft:
+		label_status_craft.text = ""
+	exibir_detalhes_receita(rec)
+
+func exibir_detalhes_receita(rec: Dictionary) -> void:
+	if rec.is_empty() or not nome_resultado:
+		return
+	
+	var id_res = rec["resultado"]["id"]
+	var qtd_res = rec["resultado"].get("quantidade", 1)
+	var info_res = InventoryManager.itens_db.get(id_res, {})
+	
+	if info_res.has("icone") and icone_resultado:
+		icone_resultado.texture = load(info_res["icone"])
+	
+	nome_resultado.text = "%s (x%d)" % [rec["nome"], qtd_res]
+	descricao_resultado.text = rec.get("descricao", "")
+	
+	for child in lista_ingredientes_vbox.get_children():
+		child.queue_free()
+	
+	for ing in rec.get("ingredientes", []):
+		var id_ing = ing["id"]
+		var qtd_necessaria = ing["quantidade"]
+		var qtd_atual = InventoryManager.obter_quantidade_item(id_ing)
+		var info_ing = InventoryManager.itens_db.get(id_ing, {})
+		var nome_ing = info_ing.get("nome", id_ing)
+		
+		var label_ing = Label.new()
+		var tem_suficiente = qtd_atual >= qtd_necessaria
+		label_ing.text = "• %s: %d / %d %s" % [nome_ing, qtd_atual, qtd_necessaria, "✅" if tem_suficiente else "❌"]
+		label_ing.add_theme_font_size_override("font_size", 11)
+		if tem_suficiente:
+			label_ing.add_theme_color_override("font_color", Color(0.35, 0.95, 0.35))
+		else:
+			label_ing.add_theme_color_override("font_color", Color(0.95, 0.4, 0.4))
+		
+		lista_ingredientes_vbox.add_child(label_ing)
+	
+	var pode_fabricar = InventoryManager.pode_criar_receita(rec)
+	btn_criar_craft.disabled = not pode_fabricar
+
+func _on_botao_criar_craft_pressionado() -> void:
+	if receita_selecionada.is_empty():
+		return
+	
+	if InventoryManager.fabricar_item(receita_selecionada):
+		label_status_craft.text = "✅ Criado com sucesso!"
+		label_status_craft.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3))
+	else:
+		label_status_craft.text = "❌ Falta material ou espaço!"
+		label_status_craft.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4))
+	
+	atualizar_painel_crafting()
+
+# ==============================================================================
+# NOTIFICAÇÃO DE ATUALIZAÇÃO AUTOMÁTICA
+# ==============================================================================
+
+func iniciar_verificacao_atualizacao() -> void:
+	if verificador_atualizacao:
+		verificador_atualizacao.request_completed.connect(_on_requisicao_atualizacao_concluida)
+		verificador_atualizacao.request(URL_VERSAO_REMOTO)
+
+func _on_requisicao_atualizacao_concluida(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
+		print("[Atualizador] Verificação de versão ignorada (sem rede ou servidor indisponível).")
+		return
+	
+	var texto_json = body.get_string_from_utf8()
+	var dados = JSON.parse_string(texto_json)
+	if dados is Dictionary and dados.has("versao"):
+		var versao_remota: String = str(dados["versao"])
+		if comparar_versoes(versao_remota, VERSAO_ATUAL) > 0:
+			exibir_notificacao_atualizacao(dados)
+
+func comparar_versoes(v1: String, v2: String) -> int:
+	var partes1 = v1.replace("v", "").split(".")
+	var partes2 = v2.replace("v", "").split(".")
+	var max_len = maxi(partes1.size(), partes2.size())
+	for i in range(max_len):
+		var num1 = int(partes1[i]) if i < partes1.size() else 0
+		var num2 = int(partes2[i]) if i < partes2.size() else 0
+		if num1 > num2:
+			return 1
+		elif num1 < num2:
+			return -1
+	return 0
+
+func exibir_notificacao_atualizacao(dados: Dictionary) -> void:
+	var nova_versao = dados.get("versao", "")
+	var msg = dados.get("mensagem", "Uma nova versão com melhorias está disponível no site oficial.")
+	url_site_atualizacao = dados.get("url_site", "https://github.com/LuFer009-dev/Novos-Come-os/releases/latest")
+	
+	texto_versao_notif.text = "Versão Atual: v%s  ➔  Nova Versão: v%s" % [VERSAO_ATUAL, nova_versao]
+	texto_msg_notif.text = msg
+	janela_atualizacao.visible = true
+
+func _on_ir_ao_site_pressionado() -> void:
+	OS.shell_open(url_site_atualizacao)
+	janela_atualizacao.visible = false
+
+func _on_fechar_notificacao_pressionado() -> void:
+	janela_atualizacao.visible = false

@@ -135,8 +135,143 @@ var itens_db: Dictionary = {
 		"icone": "res://assets/sprites/itens/Armadura/Botas-Molde-0001.png",
 		"descricao": "Botas reforçadas para os pés (+4 Defesa).",
 		"acumulavel": false
+	},
+	# Itens Criáveis / Craftáveis
+	"tabua_madeira": {
+		"nome": "Tábua de Madeira",
+		"tipo": "material",
+		"icone": "res://assets/sprites/itens/Criados/tabua_madeira.png",
+		"descricao": "Madeira processada para criar estruturas e móveis.",
+		"acumulavel": true
+	},
+	"tocha": {
+		"nome": "Tocha",
+		"tipo": "utilitario",
+		"icone": "res://assets/sprites/itens/Criados/tocha.png",
+		"descricao": "Tocha que ilumina os arredores no escuro.",
+		"acumulavel": true
+	},
+	"cerca_madeira": {
+		"nome": "Cerca de Madeira",
+		"tipo": "construcao",
+		"icone": "res://assets/sprites/itens/Criados/cerca_madeira.png",
+		"descricao": "Cerca rústica de madeira para proteger as plantações.",
+		"acumulavel": true
+	},
+	"bau_madeira": {
+		"nome": "Baú de Madeira",
+		"tipo": "construcao",
+		"icone": "res://assets/sprites/itens/Criados/bau_madeira.png",
+		"descricao": "Baú resistente para guardar itens da fazenda.",
+		"acumulavel": false
 	}
 }
+
+# Banco de dados de receitas de Crafting
+var receitas_db: Array = [
+	{
+		"id": "tabua_madeira",
+		"nome": "Tábua de Madeira",
+		"resultado": {"id": "tabua_madeira", "quantidade": 2},
+		"ingredientes": [
+			{"id": "graveto", "quantidade": 2}
+		],
+		"descricao": "Corta gravetos brutos em 2 tábuas lisas de madeira."
+	},
+	{
+		"id": "cerca_madeira",
+		"nome": "Cerca de Madeira",
+		"resultado": {"id": "cerca_madeira", "quantidade": 2},
+		"ingredientes": [
+			{"id": "tabua_madeira", "quantidade": 2}
+		],
+		"descricao": "Cria 2 cercas protetoras para sua horta e animais."
+	},
+	{
+		"id": "tocha",
+		"nome": "Tocha",
+		"resultado": {"id": "tocha", "quantidade": 2},
+		"ingredientes": [
+			{"id": "graveto", "quantidade": 1},
+			{"id": "ferro", "quantidade": 1}
+		],
+		"descricao": "Produz 2 tochas duráveis com faíscas de ferro."
+	},
+	{
+		"id": "bau_madeira",
+		"nome": "Baú de Madeira",
+		"resultado": {"id": "bau_madeira", "quantidade": 1},
+		"ingredientes": [
+			{"id": "tabua_madeira", "quantidade": 4},
+			{"id": "ferro", "quantidade": 1}
+		],
+		"descricao": "Baú com reforço de ferro para armazenar colheitas e minérios."
+	},
+	{
+		"id": "espada_prata",
+		"nome": "Espada de Prata",
+		"resultado": {"id": "espada_prata", "quantidade": 1},
+		"ingredientes": [
+			{"id": "graveto", "quantidade": 2},
+			{"id": "ferro", "quantidade": 3}
+		],
+		"descricao": "Forja uma espada de lâmina afiada para combate."
+	},
+	{
+		"id": "capacete_ferro",
+		"nome": "Capacete de Ferro",
+		"resultado": {"id": "capacete_ferro", "quantidade": 1},
+		"ingredientes": [
+			{"id": "ferro", "quantidade": 4}
+		],
+		"descricao": "Elmo de ferro forjado que concede +5 de Defesa."
+	},
+	{
+		"id": "peitoral_ferro",
+		"nome": "Peitoral de Ferro",
+		"resultado": {"id": "peitoral_ferro", "quantidade": 1},
+		"ingredientes": [
+			{"id": "ferro", "quantidade": 8}
+		],
+		"descricao": "Armadura pesada de placas de ferro (+12 de Defesa)."
+	},
+	{
+		"id": "calca_ferro",
+		"nome": "Calças de Ferro",
+		"resultado": {"id": "calca_ferro", "quantidade": 1},
+		"ingredientes": [
+			{"id": "ferro", "quantidade": 6}
+		],
+		"descricao": "Grevas de ferro reforçadas (+8 de Defesa)."
+	},
+	{
+		"id": "botas_ferro",
+		"nome": "Botas de Ferro",
+		"resultado": {"id": "botas_ferro", "quantidade": 1},
+		"ingredientes": [
+			{"id": "ferro", "quantidade": 4}
+		],
+		"descricao": "Calçado blindado de ferro (+4 de Defesa)."
+	},
+	{
+		"id": "muda_carvalho",
+		"nome": "Muda de Carvalho",
+		"resultado": {"id": "muda_carvalho", "quantidade": 1},
+		"ingredientes": [
+			{"id": "graveto", "quantidade": 3}
+		],
+		"descricao": "Junta galhos e sementes para cultivar uma nova muda de árvore."
+	},
+	{
+		"id": "pao",
+		"nome": "Pão Careca",
+		"resultado": {"id": "pao", "quantidade": 1},
+		"ingredientes": [
+			{"id": "tomate", "quantidade": 2}
+		],
+		"descricao": "Alimento nutritivo preparado com vegetais colhidos. Cura 20 HP."
+	}
+]
 
 func _ready() -> void:
 	inicializar_inventario()
@@ -270,3 +405,81 @@ func obter_item_ativo() -> Dictionary:
 
 func trocar_slot_ativo(novo_slot: int) -> void:
 	self.slot_ativo = novo_slot
+
+# ==============================================================================
+# SISTEMA DE CRAFTING (CRIAÇÃO DE ITENS)
+# ==============================================================================
+
+## Retorna a quantidade total disponível de determinado item nos 27 slots de inventário
+func obter_quantidade_item(id: String) -> int:
+	var total: int = 0
+	for i in range(SLOTS_INVENTARIO):
+		if slots[i] != null and slots[i]["id"] == id:
+			total += slots[i]["quantidade"]
+	return total
+
+## Verifica se o jogador possui todos os ingredientes e espaço na mochila para fabricar a receita
+func pode_criar_receita(receita: Dictionary) -> bool:
+	if not receita.has("ingredientes") or not receita.has("resultado"):
+		return false
+	
+	# 1. Verifica ingredientes necessários
+	for ing in receita["ingredientes"]:
+		if obter_quantidade_item(ing["id"]) < ing["quantidade"]:
+			return false
+	
+	# 2. Verifica espaço no inventário
+	var id_resultado: String = receita["resultado"]["id"]
+	var qtd_resultado: int = receita["resultado"].get("quantidade", 1)
+	var info_item = itens_db.get(id_resultado, {})
+	
+	# Se for acumulável e já existir no inventário, cabe
+	if info_item.get("acumulavel", false):
+		for i in range(SLOTS_INVENTARIO):
+			if slots[i] != null and slots[i]["id"] == id_resultado:
+				return true
+	
+	# Se houver qualquer slot vazio, cabe
+	for i in range(SLOTS_INVENTARIO):
+		if slots[i] == null:
+			return true
+	
+	return false
+
+## Consome a quantidade de itens especificada do inventário do jogador
+func consumir_item(id: String, quantidade: int) -> bool:
+	if obter_quantidade_item(id) < quantidade:
+		return false
+	
+	var restante = quantidade
+	for i in range(SLOTS_INVENTARIO):
+		if slots[i] != null and slots[i]["id"] == id:
+			if slots[i]["quantidade"] <= restante:
+				restante -= slots[i]["quantidade"]
+				slots[i] = null
+			else:
+				slots[i]["quantidade"] -= restante
+				restante = 0
+				break
+	
+	return restante == 0
+
+## Fabrica a receita: consome os materiais, adiciona o resultado e notifica a interface
+func fabricar_item(receita: Dictionary) -> bool:
+	if not pode_criar_receita(receita):
+		print("[Crafting] Não foi possível criar: materiais insuficientes ou mochila cheia.")
+		return false
+	
+	# Consome cada ingrediente da receita
+	for ing in receita["ingredientes"]:
+		consumir_item(ing["id"], ing["quantidade"])
+	
+	# Adiciona o item resultante
+	var id_res = receita["resultado"]["id"]
+	var qtd_res = receita["resultado"].get("quantidade", 1)
+	adicionar_item(id_res, qtd_res)
+	
+	inventario_atualizado.emit()
+	print("[Crafting] Item criado com sucesso: ", receita["nome"])
+	return true
+

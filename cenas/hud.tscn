@@ -447,34 +447,56 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.45)
 
 [node name="PainelCentral" type="Panel" parent="JanelaInventario"]
-custom_minimum_size = Vector2(550, 270)
+custom_minimum_size = Vector2(630, 330)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -275.0
-offset_top = -135.0
-offset_right = 275.0
-offset_bottom = 135.0
+offset_left = -315.0
+offset_top = -165.0
+offset_right = 315.0
+offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Titulo" type="Label" parent="JanelaInventario/PainelCentral"]
+[node name="BarraAbas" type="HBoxContainer" parent="JanelaInventario/PainelCentral"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -220.0
-offset_top = 10.0
-offset_right = 180.0
-offset_bottom = 34.0
+offset_left = -295.0
+offset_top = 8.0
+offset_right = 230.0
+offset_bottom = 40.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 15
-text = "🎒 MOCHILA (27 SLOTS) & EQUIPAMENTOS"
+theme_override_constants/separation = 12
+
+[node name="BotaoAbaMochila" type="Button" parent="JanelaInventario/PainelCentral/BarraAbas"]
+custom_minimum_size = Vector2(185, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🎒 Mochila & Equipamentos"
+
+[node name="BotaoAbaCrafting" type="Button" parent="JanelaInventario/PainelCentral/BarraAbas"]
+custom_minimum_size = Vector2(165, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🔨 Criação (Crafting)"
 
 [node name="BotaoFechar" type="Button" parent="JanelaInventario/PainelCentral"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 38.0
+grow_horizontal = 0
+text = "✕"
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 1
 anchors_preset = 1
@@ -731,12 +753,217 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -410.0
-offset_top = -68.0
-offset_right = -15.0
-offset_bottom = 68.0
+offset_left = -470.0
+offset_top = -75.0
+offset_right = -25.0
+offset_bottom = 75.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 9
+
+[node name="ConteudoCrafting" type="Control" parent="JanelaInventario/PainelCentral"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelListaTitulo" type="Label" parent="JanelaInventario/PainelCentral/ConteudoCrafting"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 4.0
+offset_right = 240.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 12
+text = "RECEITAS DISPONÍVEIS"
+
+[node name="ScrollReceitas" type="ScrollContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 26.0
+offset_right = 265.0
+offset_bottom = 270.0
+
+[node name="ListaReceitas" type="VBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/ScrollReceitas"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="PainelDetalhes" type="Panel" parent="JanelaInventario/PainelCentral/ConteudoCrafting"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = 610.0
+offset_bottom = 270.0
+
+[node name="VBoxDetalhes" type="VBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTopo" type="HBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="IconeResultado" type="TextureRect" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxTexto" type="VBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NomeResultado" type="Label" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo/VBoxTexto"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "Selecione uma receita"
+
+[node name="DescricaoResultado" type="Label" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxTopo/VBoxTexto"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 10
+text = "Escolha um item ao lado para ver os requisitos"
+autowrap_mode = 3
+
+[node name="Separador1" type="HSeparator" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+layout_mode = 2
+
+[node name="LabelIngredientes" type="Label" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Materiais Necessários:"
+
+[node name="ScrollIngredientes" type="ScrollContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+custom_minimum_size = Vector2(0, 65)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ListaIngredientes" type="VBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/ScrollIngredientes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Separador2" type="HSeparator" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+layout_mode = 2
+
+[node name="HBoxAcoes" type="HBoxContainer" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BotaoCriar" type="Button" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes"]
+custom_minimum_size = Vector2(130, 32)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🔨 Criar Item"
+
+[node name="LabelStatus" type="Label" parent="JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+vertical_alignment = 1
+
+[node name="JanelaAtualizacao" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="JanelaAtualizacao"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="PainelDialogo" type="Panel" parent="JanelaAtualizacao"]
+custom_minimum_size = Vector2(500, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -130.0
+offset_right = 250.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="JanelaAtualizacao/PainelDialogo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Titulo" type="Label" parent="JanelaAtualizacao/PainelDialogo/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "🚀 NOVA ATUALIZAÇÃO DISPONÍVEL!"
+horizontal_alignment = 1
+
+[node name="TextoVersao" type="Label" parent="JanelaAtualizacao/PainelDialogo/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Versão Atual: v1.0.0 ➔ Nova Versão: v1.1.0"
+horizontal_alignment = 1
+
+[node name="TextoMensagem" type="Label" parent="JanelaAtualizacao/PainelDialogo/VBox"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Uma nova versão com melhorias e novidades está disponível no site oficial."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxBotoes" type="HBoxContainer" parent="JanelaAtualizacao/PainelDialogo/VBox"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BotaoIrAoSite" type="Button" parent="JanelaAtualizacao/PainelDialogo/VBox/HBoxBotoes"]
+custom_minimum_size = Vector2(190, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "🌐 Ir ao Site / Baixar"
+
+[node name="BotaoFecharNotif" type="Button" parent="JanelaAtualizacao/PainelDialogo/VBox/HBoxBotoes"]
+custom_minimum_size = Vector2(110, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "✕ Depois"
+
+[node name="VerificadorAtualizacao" type="HTTPRequest" parent="."]
+timeout = 6.0
