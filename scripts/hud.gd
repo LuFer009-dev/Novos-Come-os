@@ -10,8 +10,11 @@ static var inventario_aberto: bool = false
 ## - 4 Slots de Equipamento de Armadura (Capacete, Peitoral, Calças, Botas)
 ## - Sistema completo de Drag and Drop (Arrastar e Soltar)
 
-@onready var barra_vida: ProgressBar = $PainelStatus/VBoxContainer/LinhaVida/BarraVida
-@onready var texto_vida: Label = $PainelStatus/VBoxContainer/LinhaVida/TextoVida
+@onready var container_coracoes: HBoxContainer = $PainelStatus/VBoxContainer/ContainerVidaCoracoes
+
+var tex_vida_cheia = preload("res://assets/sprites/ui/vida/vida-0001.png")
+var tex_vida_metade = preload("res://assets/sprites/ui/vida/vidaMetade-0001.png")
+var tex_vida_zerada = preload("res://assets/sprites/ui/vida/vidaZerada-0001.png")
 
 # Barra de Ferramentas
 @onready var barra_ferramentas: Control = $BarraFerramentas
@@ -41,6 +44,10 @@ static var inventario_aberto: bool = false
 @onready var lista_ingredientes_vbox: VBoxContainer = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/ScrollIngredientes/ListaIngredientes
 @onready var btn_criar_craft: Button = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes/BotaoCriar
 @onready var label_status_craft: Label = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/HBoxAcoes/LabelStatus
+@onready var btn_confirmar: Button = $JanelaInventario/PainelCentral/BotaoConfirmar
+@onready var campo_busca: LineEdit = $JanelaInventario/PainelCentral/ConteudoCrafting/PainelDetalhes/VBoxDetalhes/BarraBusca/CampoBusca
+
+var termo_busca: String = ""
 
 # Janela de Notificação de Atualização
 @onready var janela_atualizacao: Control = $JanelaAtualizacao
@@ -76,6 +83,10 @@ func _ready() -> void:
 	
 	btn_mochila.pressed.connect(toggle_inventario)
 	btn_fechar_inventario.pressed.connect(toggle_inventario)
+	if btn_confirmar:
+		btn_confirmar.pressed.connect(toggle_inventario)
+	if campo_busca:
+		campo_busca.text_changed.connect(_on_campo_busca_text_changed)
 	
 	# Conexões das Abas de Mochila e Crafting
 	btn_aba_mochila.pressed.connect(mostrar_aba_mochila)
@@ -232,11 +243,22 @@ func toggle_inventario() -> void:
 		atualizar_todos_os_slots()
 
 func _on_vida_alterada(atual: float, maximo: float) -> void:
-	if barra_vida:
-		barra_vida.max_value = maximo
-		barra_vida.value = atual
-	if texto_vida:
-		texto_vida.text = "HP: %d/%d" % [int(atual), int(maximo)]
+	if not container_coracoes:
+		return
+	
+	var coracoes = container_coracoes.get_children()
+	var qtd_coracoes = coracoes.size()
+	var hp_por_coracao = maximo / float(qtd_coracoes)
+	
+	for i in range(qtd_coracoes):
+		var hp_base = i * hp_por_coracao
+		var c_node = coracoes[i] as TextureRect
+		if atual >= hp_base + hp_por_coracao:
+			c_node.texture = tex_vida_cheia
+		elif atual >= hp_base + (hp_por_coracao * 0.5):
+			c_node.texture = tex_vida_metade
+		else:
+			c_node.texture = tex_vida_zerada
 
 func _on_defesa_alterada(total_defesa: int) -> void:
 	if label_defesa:
@@ -312,6 +334,10 @@ func mostrar_aba_crafting() -> void:
 # SISTEMA DE INTERFACE DE CRAFTING
 # ==============================================================================
 
+func _on_campo_busca_text_changed(novo_texto: String) -> void:
+	termo_busca = novo_texto.strip_edges().to_lower()
+	atualizar_painel_crafting()
+
 func atualizar_painel_crafting() -> void:
 	if not lista_receitas_vbox:
 		return
@@ -323,6 +349,8 @@ func atualizar_painel_crafting() -> void:
 		receita_selecionada = InventoryManager.receitas_db[0]
 	
 	for rec in InventoryManager.receitas_db:
+		if termo_busca != "" and not rec["nome"].to_lower().contains(termo_busca):
+			continue
 		var pode = InventoryManager.pode_criar_receita(rec)
 		var btn = Button.new()
 		btn.custom_minimum_size = Vector2(0, 36)

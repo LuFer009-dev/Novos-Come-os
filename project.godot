@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="Novos Começos"
-run/main_scene="res://cenas/mundo_fazenda.tscn"
+run/main_scene="res://cenas/tela_inicio.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://culaeyfkm7vl"
 
 [autoload]
 

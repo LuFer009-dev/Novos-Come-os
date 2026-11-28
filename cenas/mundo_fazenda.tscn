@@ -5,15 +5,29 @@
 [ext_resource type="PackedScene" path="res://cenas/item_coletavel.tscn" id="3_item"]
 [ext_resource type="PackedScene" path="res://cenas/arvore.tscn" id="4_arvore"]
 [ext_resource type="PackedScene" path="res://cenas/rocha_minerio.tscn" id="5_rocha"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/house.png" id="6_house"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/road.png" id="7_road"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/chest.png" id="8_chest"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/spring_crops.png" id="9_crops"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/fences.png" id="10_fences"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/objects/maple_tree.png" id="11_maple"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/animals/cow_brown.png" id="12_cow"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/animals/bull_brown.png" id="13_bull"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/animals/chicken_red.png" id="14_chick_red"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/animals/chicken_blonde.png" id="15_chick_blonde"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiny_farm/animals/baby_chicken.png" id="16_baby_chick"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tronco"]
-size = Vector2(40, 20)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_casa"]
+size = Vector2(190, 44)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_arbusto"]
-size = Vector2(28, 20)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chest"]
+size = Vector2(16, 12)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lago"]
-size = Vector2(100, 70)
+[sub_resource type="CircleShape2D" id="CircleShape2D_tronco"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vaca"]
+radius = 10.0
 
 [node name="MundoFazenda" type="Node2D" unique_id=1239862163]
 y_sort_enabled = true
@@ -27,22 +41,166 @@ offset_bottom = 800.0
 mouse_filter = 2
 color = Color(0.25, 0.52, 0.28, 1)
 
+[node name="Estrada" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(-120, -70)
+texture = ExtResource("7_road")
+
+[node name="CasaFazenda" type="StaticBody2D" parent="."]
+position = Vector2(-120, -150)
+
+[node name="Sprite" type="Sprite2D" parent="CasaFazenda"]
+texture = ExtResource("6_house")
+
+[node name="Colisor" type="CollisionShape2D" parent="CasaFazenda"]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_casa")
+
+[node name="BauFazenda" type="StaticBody2D" parent="."]
+position = Vector2(-10, -110)
+
+[node name="Sprite" type="Sprite2D" parent="BauFazenda"]
+texture = ExtResource("8_chest")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Colisor" type="CollisionShape2D" parent="BauFazenda"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_chest")
+
+[node name="Plantacao" type="Sprite2D" parent="."]
+position = Vector2(140, -40)
+texture = ExtResource("9_crops")
+region_enabled = true
+region_rect = Rect2(0, 0, 112, 64)
+
+[node name="Cercas" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Cerca1" type="Sprite2D" parent="Cercas"]
+position = Vector2(80, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Cerca2" type="Sprite2D" parent="Cercas"]
+position = Vector2(96, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Cerca3" type="Sprite2D" parent="Cercas"]
+position = Vector2(112, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Cerca4" type="Sprite2D" parent="Cercas"]
+position = Vector2(168, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Cerca5" type="Sprite2D" parent="Cercas"]
+position = Vector2(184, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Cerca6" type="Sprite2D" parent="Cercas"]
+position = Vector2(200, -75)
+texture = ExtResource("10_fences")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="ArvoresOutono" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="MapleTree1" type="StaticBody2D" parent="ArvoresOutono"]
+position = Vector2(-260, -90)
+
+[node name="Sprite" type="Sprite2D" parent="ArvoresOutono/MapleTree1"]
+texture = ExtResource("11_maple")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 48)
+
+[node name="Colisor" type="CollisionShape2D" parent="ArvoresOutono/MapleTree1"]
+position = Vector2(0, 16)
+shape = SubResource("CircleShape2D_tronco")
+
+[node name="MapleTree2" type="StaticBody2D" parent="ArvoresOutono"]
+position = Vector2(230, -130)
+
+[node name="Sprite" type="Sprite2D" parent="ArvoresOutono/MapleTree2"]
+texture = ExtResource("11_maple")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 48)
+
+[node name="Colisor" type="CollisionShape2D" parent="ArvoresOutono/MapleTree2"]
+position = Vector2(0, 16)
+shape = SubResource("CircleShape2D_tronco")
+
+[node name="AnimaisFazenda" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Vaca" type="StaticBody2D" parent="AnimaisFazenda"]
+position = Vector2(110, -140)
+
+[node name="Sprite" type="Sprite2D" parent="AnimaisFazenda/Vaca"]
+texture = ExtResource("12_cow")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Colisor" type="CollisionShape2D" parent="AnimaisFazenda/Vaca"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_vaca")
+
+[node name="Boi" type="StaticBody2D" parent="AnimaisFazenda"]
+position = Vector2(170, -130)
+
+[node name="Sprite" type="Sprite2D" parent="AnimaisFazenda/Boi"]
+texture = ExtResource("13_bull")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Colisor" type="CollisionShape2D" parent="AnimaisFazenda/Boi"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_vaca")
+
+[node name="GalinhaVermelha" type="Sprite2D" parent="AnimaisFazenda"]
+position = Vector2(-30, -50)
+texture = ExtResource("14_chick_red")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="GalinhaLoirinha" type="Sprite2D" parent="AnimaisFazenda"]
+position = Vector2(40, -60)
+texture = ExtResource("15_chick_blonde")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Pintinho" type="Sprite2D" parent="AnimaisFazenda"]
+position = Vector2(15, -45)
+texture = ExtResource("16_baby_chick")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
 [node name="Arvores" type="Node2D" parent="." unique_id=940871343]
 y_sort_enabled = true
 
 [node name="ArvoreAdulta1" parent="Arvores" unique_id=340108502 instance=ExtResource("4_arvore")]
-position = Vector2(-90, -110)
+position = Vector2(-90, -10)
 
 [node name="ArvoreAdulta2" parent="Arvores" unique_id=1722211747 instance=ExtResource("4_arvore")]
-position = Vector2(-170, -90)
+position = Vector2(-170, 90)
 
 [node name="ArvoreMedia" parent="Arvores" unique_id=1712804711 instance=ExtResource("4_arvore")]
-position = Vector2(120, -120)
+position = Vector2(120, 80)
 estagio_atual = 2
 tempo_por_estagio = 15.0
 
 [node name="ArvorePequena" parent="Arvores" unique_id=141312810 instance=ExtResource("4_arvore")]
-position = Vector2(-180, 110)
+position = Vector2(-180, 160)
 estagio_atual = 1
 tempo_por_estagio = 15.0
 
@@ -66,56 +224,11 @@ position = Vector2(180, 150)
 [node name="RochaMinerio3" parent="Rochas" instance=ExtResource("5_rocha")]
 position = Vector2(-130, 170)
 
-[node name="Obstaculos" type="Node2D" parent="." unique_id=8768575]
-y_sort_enabled = true
-
-[node name="TroncoCarvalho" type="StaticBody2D" parent="Obstaculos" unique_id=440809825]
-position = Vector2(-120, -50)
-
-[node name="Visual" type="ColorRect" parent="Obstaculos/TroncoCarvalho" unique_id=324759694]
-offset_left = -20.0
-offset_top = -18.0
-offset_right = 20.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.48, 0.3, 0.16, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/TroncoCarvalho" unique_id=945820586]
-shape = SubResource("RectangleShape2D_tronco")
-
-[node name="ArbustoBagas" type="StaticBody2D" parent="Obstaculos" unique_id=687756409]
-position = Vector2(-80, 100)
-
-[node name="Visual" type="ColorRect" parent="Obstaculos/ArbustoBagas" unique_id=856808597]
-offset_left = -14.0
-offset_top = -18.0
-offset_right = 14.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.18, 0.65, 0.32, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/ArbustoBagas" unique_id=972192214]
-shape = SubResource("RectangleShape2D_arbusto")
-
-[node name="LagoAgua" type="StaticBody2D" parent="Obstaculos" unique_id=1416790938]
-position = Vector2(-220, 40)
-
-[node name="Visual" type="ColorRect" parent="Obstaculos/LagoAgua" unique_id=1130638520]
-offset_left = -50.0
-offset_top = -35.0
-offset_right = 50.0
-offset_bottom = 35.0
-mouse_filter = 2
-color = Color(0.18, 0.45, 0.75, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstaculos/LagoAgua" unique_id=1148119097]
-shape = SubResource("RectangleShape2D_lago")
-
 [node name="ItensNoChao" type="Node2D" parent="." unique_id=1432420288]
 y_sort_enabled = true
 
 [node name="Graveto1" parent="ItensNoChao" unique_id=1063673620 instance=ExtResource("3_item")]
-position = Vector2(-50, -30)
+position = Vector2(-50, 30)
 item_id = "graveto"
 quantidade = 1
 
@@ -130,7 +243,7 @@ item_id = "ferro"
 quantidade = 1
 
 [node name="Tomate1" parent="ItensNoChao" unique_id=2081541348 instance=ExtResource("3_item")]
-position = Vector2(90, -20)
+position = Vector2(90, 20)
 item_id = "tomate"
 quantidade = 3
 
